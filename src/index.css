@@ -1,0 +1,10 @@
+/* Este archivo se mantiene minimalista para evitar conflictos con App.css */
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}

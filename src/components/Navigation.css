@@ -1,0 +1,276 @@
+:root {
+  --verde-limon: #97f002;
+  --verde-oscuro: #2d5a27;
+  --blanco: #ffffff;
+  --gris-claro: #f4f4f4;
+  --negro: #1a1a1a;
+}
+
+/* Reset y estilos base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main-header {
+  background-color: var(--blanco);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  min-height: 70px;
+}
+
+/* Logo */
+.logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: var(--verde-oscuro);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 1002;
+}
+
+.logo-icon {
+  color: var(--verde-limon);
+  background: var(--verde-oscuro);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 1.2rem;
+}
+
+.logo-text {
+  transition: color 0.3s ease;
+}
+
+.logo:hover .logo-text {
+  color: var(--verde-limon);
+}
+
+/* Navegación Desktop */
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: var(--negro);
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.5rem 0;
+  position: relative;
+  font-size: 1rem;
+}
+
+.nav-links a:hover {
+  color: var(--verde-oscuro);
+}
+
+.nav-links a:not(.btn-login)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--verde-oscuro);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* Botón Login */
+.btn-login {
+  background-color: var(--verde-oscuro);
+  padding: 0.6rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  color: white !important;
+  transition: all 0.3s ease;
+  border: 10px solid var(--verde-oscuro);
+}
+
+.btn-login:hover {
+  background-color: #295c22;
+  color: var(--verde-oscuro) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+}
+
+/* Botón Menú Móvil */
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 1002;
+}
+
+.mobile-menu-btn span {
+  width: 100%;
+  height: 3px;
+  background-color: var(--verde-oscuro);
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+/* Animación para menú activo */
+.mobile-menu-btn.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.mobile-menu-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.mobile-menu-btn.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* ===================== */
+/* RESPONSIVE DESIGN */
+/* ===================== */
+
+/* Tablet (768px - 1024px) */
+@media (max-width: 1024px) {
+  .main-header {
+    padding: 1rem 3%;
+  }
+  
+  .nav-links {
+    gap: 1.5rem;
+  }
+}
+
+/* Móvil (menos de 768px) */
+@media (max-width: 768px) {
+  .main-header {
+    padding: 1rem 5%;
+  }
+  
+  /* Ocultar menú desktop por defecto */
+  .nav-links {
+    display: none;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background-color: var(--blanco);
+    flex-direction: column;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    gap: 0;
+    max-height: calc(100vh - 70px);
+    overflow-y: auto;
+  }
+  
+  /* Mostrar menú cuando está activo */
+  .nav-links.active {
+    display: flex;
+  }
+  
+  .nav-links li {
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-links li:last-child {
+    border-bottom: none;
+    margin-top: 1rem;
+  }
+  
+  .nav-links a {
+    display: block;
+    padding: 1rem 0;
+    width: 100%;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+  
+  .nav-links a:not(.btn-login)::after {
+    display: none;
+  }
+  
+  .btn-login {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  /* Mostrar botón hamburguesa */
+  .mobile-menu-btn {
+    display: flex;
+  }
+  
+  /* Logo más pequeño en móvil */
+  .logo {
+    font-size: 1.3rem;
+  }
+  
+  .logo-icon {
+    padding: 6px 10px;
+    font-size: 1rem;
+  }
+}
+
+/* Móvil pequeño (menos de 480px) */
+@media (max-width: 480px) {
+  .main-header {
+    padding: 0.8rem 4%;
+  }
+  
+  .logo {
+    font-size: 1.2rem;
+  }
+  
+  .nav-links {
+    top: 60px;
+  }
+  
+  .nav-links a {
+    font-size: 1rem;
+    padding: 0.8rem 0;
+  }
+}
+
+/* Móvil muy pequeño (menos de 360px) */
+@media (max-width: 360px) {
+  .main-header {
+    padding: 0.7rem 3%;
+    min-height: 60px;
+  }
+  
+  .logo {
+    font-size: 1.1rem;
+  }
+  
+  .logo-icon {
+    padding: 5px 8px;
+  }
+  
+  .nav-links {
+    top: 60px;
+    padding: 1.5rem;
+  }
+}
