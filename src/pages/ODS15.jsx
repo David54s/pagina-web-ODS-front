@@ -13,7 +13,7 @@ const ODS15 = () => {
           <div className="ods-number">15</div>
           <div>
             <h1>Vida de Ecosistemas Terrestres</h1>
-            <p>Proteger, restablecer y promover el uso sostenible de los ecosistemas terrestres.</p>
+            <p>Proteger, concientizar y promover el uso sostenible de los ecosistemas terrestres.</p>
           </div>
         </div>
 
@@ -25,26 +25,28 @@ const ODS15 = () => {
 
         <section className="metas-section">
           <h2>Metas Principales</h2>
-          <div className="grid-targets">
-            <div className="target-card">
-              <strong>🌲 Conservación de Bosques</strong>
-              <p>Asegurar la conservación y el uso sostenible de los ecosistemas de montaña y bosques templados.</p>
+          
+          {/* Primera card - Conservación de Bosques */}
+          <div className="target-card full-width">
+            <strong> Conservación de Bosques</strong>
+            <p>Asegurar la conservación y el uso sostenible de los ecosistemas de montaña y bosques templados. Los bosques templados de Puebla, especialmente en la Sierra Norte y las laderas de La Malinche, albergan especies únicas y son fundamentales para la regulación del clima y la conservación del agua.</p>
+          </div>
+
+          {/* Grid de imágenes */}
+          <div className="grid-images">
+            <div className="target-card image-placeholder image-bosques">
+              
             </div>
 
-            <div className="target-card">
-              <strong>🦋 Protección de Biodiversidad</strong>
-              <p>Adoptar medidas urgentes para reducir la degradación de los hábitats naturales y proteger especies en peligro.</p>
+            <div className="target-card image-placeholder image-biodiversidad">
+              
             </div>
+          </div>
 
-            <div className="target-card image-placeholder">
-              <strong>📷 Imagen ilustrativa</strong>
-              <p>Espacio para imagen relacionada</p>
-            </div>
-
-            <div className="target-card image-placeholder">
-              <strong>📷 Imagen ilustrativa</strong>
-              <p>Espacio para imagen relacionada</p>
-            </div>
+          {/* Segunda card - Protección de Biodiversidad */}
+          <div className="target-card full-width">
+            <strong>Protección de Biodiversidad</strong>
+            <p>Adoptar medidas urgentes para reducir la degradación de los hábitats naturales y proteger especies en peligro. En Puebla, esto incluye la protección de especies endémicas como el conejo teporingo, el ajolote y diversas especies de aves migratorias que dependen de nuestros ecosistemas.</p>
           </div>
         </section>
 

@@ -47,7 +47,7 @@
 .card {
   padding: 30px;
   border-radius: 15px;
-  background: var(--gris-claro);
+  background: var(--blanco);
   border-top: 5px solid var(--verde-oscuro);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   animation: slideUp 0.6s ease backwards;
@@ -67,7 +67,7 @@
 }
 
 .card h2 {
-  color: var(--verde-oscuro);
+  color: var(--negro);
   margin-bottom: 15px;
   display: flex;
   align-items: center;
@@ -96,7 +96,7 @@
 }
 
 .support-section {
-  background-color: #f9fff0;
+  background-color: var(--blanco);
   padding: 60px 20px;
   text-align: center;
   margin-top: 40px;

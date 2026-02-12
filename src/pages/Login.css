@@ -9,7 +9,7 @@
 
 .login-page {
   background: linear-gradient(var(--fondo-overlay), var(--fondo-overlay)),
-    url('../assets/cascada-tepexnal-aquixtla-puebla.jpg') no-repeat center center;
+    url('../assets/puebladiversidad.webp') no-repeat center center;
   background-size: cover;
   background-attachment: fixed;
   min-height: 100vh;
