@@ -1,0 +1,124 @@
+:root {
+  --verde-limon: #97f002;
+  --verde-oscuro: #2d5a27;
+}
+
+.perfil-page {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f0f7ee 0%, #e8f5e9 100%);
+  padding: 2rem 1rem;
+}
+
+.perfil-card {
+  background: white;
+  border-radius: 20px;
+  padding: 3rem 2.5rem;
+  max-width: 420px;
+  width: 100%;
+  box-shadow: 0 10px 40px rgba(45, 90, 39, 0.12);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+/* Avatar circular con iniciales */
+.perfil-avatar {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--verde-oscuro);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 4px 16px rgba(45, 90, 39, 0.3);
+}
+
+.perfil-nombre {
+  font-size: 1.5rem;
+  color: var(--verde-oscuro);
+  font-weight: 700;
+  margin: 0;
+}
+
+.perfil-correo {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.perfil-divider {
+  width: 60px;
+  height: 3px;
+  background: var(--verde-limon);
+  border-radius: 2px;
+  margin: 0.5rem 0;
+}
+
+/* Información adicional */
+.perfil-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin: 0.5rem 0 1rem;
+}
+
+.perfil-info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8faf7;
+  padding: 0.8rem 1.2rem;
+  border-radius: 10px;
+  border: 1px solid #e0ece0;
+}
+
+.perfil-info-label {
+  color: #888;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.perfil-info-value {
+  color: var(--verde-oscuro);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Botón cerrar sesión */
+.btn-cerrar-sesion {
+  width: 100%;
+  padding: 0.85rem;
+  border: 2px solid #c0392b;
+  background: transparent;
+  color: #c0392b;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+}
+
+.btn-cerrar-sesion:hover {
+  background: #c0392b;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(192, 57, 43, 0.25);
+}
+
+@media (max-width: 480px) {
+  .perfil-card {
+    padding: 2rem 1.5rem;
+  }
+}

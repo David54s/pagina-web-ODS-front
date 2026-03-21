@@ -1,34 +1,75 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { login, registrar } from '../services/api';
 import './Login.css';
 
 const Login = () => {
+  const navigate    = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
+
   const [formData, setFormData] = useState({
-    nombre: '',
-    email: '',
-    password: '',
-    aceptaTerminos: false
+    nombre:         '',
+    email:          '',
+    password:       '',
+    aceptaTerminos: false,
   });
+
+  const [cargando, setCargando] = useState(false);
+  const [error,    setError]    = useState('');
+
+  // ── Handlers ───────────────────────────────────────────────
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === 'checkbox' ? checked : value,
     }));
+    setError('');   // Limpiar error al escribir
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isLogin) {
-      console.log('Iniciando sesión:', { email: formData.email });
-      alert('¡Bienvenido de nuevo a BioPuebla!');
-    } else {
-      console.log('Registrando usuario:', formData);
-      alert('¡Registro exitoso! Bienvenido a BioPuebla.');
+    setError('');
+    setCargando(true);
+
+    try {
+      if (isLogin) {
+        // ── LOGIN ──
+        await login({
+          correo_electronico: formData.email,
+          contrasena:         formData.password,
+        });
+        navigate('/');   // Redirige al home tras login exitoso
+
+      } else {
+        // ── REGISTRO ──
+        await registrar({
+          nombre_completo:      formData.nombre,
+          correo_electronico:   formData.email,
+          contrasena:           formData.password,
+          terminos_condiciones: formData.aceptaTerminos,
+        });
+        // Tras registrarse, llevar al login
+        setIsLogin(true);
+        setFormData({ nombre: '', email: '', password: '', aceptaTerminos: false });
+        alert('¡Registro exitoso! Ahora inicia sesión.');
+      }
+
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setCargando(false);
     }
   };
+
+  const cambiarModo = () => {
+    setIsLogin(!isLogin);
+    setError('');
+    setFormData({ nombre: '', email: '', password: '', aceptaTerminos: false });
+  };
+
+  // ── Render ─────────────────────────────────────────────────
 
   return (
     <div className="login-page">
@@ -36,10 +77,24 @@ const Login = () => {
         <div className="mini-logo">🌿</div>
         <h2>{isLogin ? 'Bienvenido de Nuevo' : 'Únete a BioPuebla'}</h2>
         <p>
-          {isLogin 
-            ? 'Inicia sesión para continuar protegiendo nuestra biodiversidad.' 
+          {isLogin
+            ? 'Inicia sesión para continuar protegiendo nuestra biodiversidad.'
             : 'Forma parte de la red de conservación más grande de Puebla.'}
         </p>
+
+        {/* Mensaje de error */}
+        {error && (
+          <div className="error-msg" style={{
+            background: '#ffe0e0',
+            color: '#c0392b',
+            padding: '10px 14px',
+            borderRadius: '8px',
+            marginBottom: '12px',
+            fontSize: '0.9rem',
+          }}>
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           {!isLogin && (
@@ -76,7 +131,7 @@ const Login = () => {
               type="password"
               id="password"
               name="password"
-              placeholder={isLogin ? 'Tu contraseña' : 'Crea una contraseña'}
+              placeholder={isLogin ? 'Tu contraseña' : 'Crea una contraseña (mín. 6 caracteres)'}
               value={formData.password}
               onChange={handleChange}
               required
@@ -96,8 +151,10 @@ const Login = () => {
             </label>
           )}
 
-          <button type="submit" className="btn-submit">
-            {isLogin ? 'Iniciar Sesión' : 'Registrarme'}
+          <button type="submit" className="btn-submit" disabled={cargando}>
+            {cargando
+              ? (isLogin ? 'Iniciando sesión...' : 'Registrando...')
+              : (isLogin ? 'Iniciar Sesión' : 'Registrarme')}
           </button>
         </form>
 
@@ -105,9 +162,9 @@ const Login = () => {
 
         <div className="toggle-link">
           {isLogin ? '¿No tienes una cuenta?' : '¿Ya tienes una cuenta?'}{' '}
-          <button 
-            type="button" 
-            onClick={() => setIsLogin(!isLogin)}
+          <button
+            type="button"
+            onClick={cambiarModo}
             className="link-button"
           >
             {isLogin ? 'Regístrate' : 'Inicia sesión'}

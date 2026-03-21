@@ -6,7 +6,6 @@
   --negro: #1a1a1a;
 }
 
-/* Reset y estilos base */
 * {
   margin: 0;
   padding: 0;
@@ -78,7 +77,7 @@
   color: var(--verde-oscuro);
 }
 
-.nav-links a:not(.btn-login)::after {
+.nav-links a:not(.btn-login):not(.btn-perfil)::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -101,14 +100,51 @@
   font-weight: 600;
   color: white !important;
   transition: all 0.3s ease;
-  border: 10px solid var(--verde-oscuro);
+  border: 2px solid var(--verde-oscuro);
 }
 
 .btn-login:hover {
-  background-color: #295c22;
+  background-color: transparent;
   color: var(--verde-oscuro) !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+}
+
+/* Botón Perfil */
+.btn-perfil {
+  background-color: transparent;
+  padding: 0.6rem 1.2rem;
+  border-radius: 25px;
+  font-weight: 600;
+  color: var(--verde-oscuro) !important;
+  border: 2px solid var(--verde-oscuro);
+  transition: all 0.3s ease;
+}
+
+.btn-perfil:hover {
+  background-color: var(--verde-oscuro);
+  color: white !important;
+  transform: translateY(-2px);
+}
+
+/* Botón Cerrar sesión */
+.btn-logout {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #c0392b;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.btn-logout:hover {
+  background-color: #ffe0e0;
+  border-color: #c0392b;
+  transform: translateY(-2px);
 }
 
 /* Botón Menú Móvil */
@@ -133,7 +169,6 @@
   transition: all 0.3s ease;
 }
 
-/* Animación para menú activo */
 .mobile-menu-btn.active span:nth-child(1) {
   transform: rotate(45deg) translate(6px, 6px);
 }
@@ -147,27 +182,17 @@
 }
 
 /* ===================== */
-/* RESPONSIVE DESIGN */
+/* RESPONSIVE DESIGN     */
 /* ===================== */
 
-/* Tablet (768px - 1024px) */
 @media (max-width: 1024px) {
-  .main-header {
-    padding: 1rem 3%;
-  }
-  
-  .nav-links {
-    gap: 1.5rem;
-  }
+  .main-header { padding: 1rem 3%; }
+  .nav-links   { gap: 1.5rem; }
 }
 
-/* Móvil (menos de 768px) */
 @media (max-width: 768px) {
-  .main-header {
-    padding: 1rem 5%;
-  }
-  
-  /* Ocultar menú desktop por defecto */
+  .main-header { padding: 1rem 5%; }
+
   .nav-links {
     display: none;
     position: fixed;
@@ -183,22 +208,19 @@
     max-height: calc(100vh - 70px);
     overflow-y: auto;
   }
-  
-  /* Mostrar menú cuando está activo */
-  .nav-links.active {
-    display: flex;
-  }
-  
+
+  .nav-links.active { display: flex; }
+
   .nav-links li {
     width: 100%;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
-  
+
   .nav-links li:last-child {
     border-bottom: none;
     margin-top: 1rem;
   }
-  
+
   .nav-links a {
     display: block;
     padding: 1rem 0;
@@ -206,71 +228,42 @@
     text-align: center;
     font-size: 1.1rem;
   }
-  
-  .nav-links a:not(.btn-login)::after {
-    display: none;
-  }
-  
-  .btn-login {
+
+  .nav-links a:not(.btn-login):not(.btn-perfil)::after { display: none; }
+
+  .btn-login,
+  .btn-perfil {
     width: 100%;
     padding: 0.8rem;
     font-size: 1rem;
     margin-top: 0.5rem;
+    text-align: center;
+    display: block;
   }
-  
-  /* Mostrar botón hamburguesa */
-  .mobile-menu-btn {
-    display: flex;
-  }
-  
-  /* Logo más pequeño en móvil */
-  .logo {
-    font-size: 1.3rem;
-  }
-  
-  .logo-icon {
-    padding: 6px 10px;
+
+  .btn-logout {
+    width: 100%;
+    text-align: center;
     font-size: 1rem;
+    margin-top: 0.5rem;
   }
+
+  .mobile-menu-btn { display: flex; }
+
+  .logo           { font-size: 1.3rem; }
+  .logo-icon      { padding: 6px 10px; font-size: 1rem; }
 }
 
-/* Móvil pequeño (menos de 480px) */
 @media (max-width: 480px) {
-  .main-header {
-    padding: 0.8rem 4%;
-  }
-  
-  .logo {
-    font-size: 1.2rem;
-  }
-  
-  .nav-links {
-    top: 60px;
-  }
-  
-  .nav-links a {
-    font-size: 1rem;
-    padding: 0.8rem 0;
-  }
+  .main-header   { padding: 0.8rem 4%; }
+  .logo          { font-size: 1.2rem; }
+  .nav-links     { top: 60px; }
+  .nav-links a   { font-size: 1rem; padding: 0.8rem 0; }
 }
 
-/* Móvil muy pequeño (menos de 360px) */
 @media (max-width: 360px) {
-  .main-header {
-    padding: 0.7rem 3%;
-    min-height: 60px;
-  }
-  
-  .logo {
-    font-size: 1.1rem;
-  }
-  
-  .logo-icon {
-    padding: 5px 8px;
-  }
-  
-  .nav-links {
-    top: 60px;
-    padding: 1.5rem;
-  }
+  .main-header   { padding: 0.7rem 3%; min-height: 60px; }
+  .logo          { font-size: 1.1rem; }
+  .logo-icon     { padding: 5px 8px; }
+  .nav-links     { top: 60px; padding: 1.5rem; }
 }
