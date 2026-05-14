@@ -4,7 +4,7 @@
 //  Maneja la lógica de tokens, cabeceras de autorización y errores.
 // ============================================================
 
-const BASE_URL = 'http://127.0.0.1:8000';
+const BASE_URL = 'https://Cervz.pythonanywhere.com';
 
 // ── HELPERS (Funciones de utilidad interna) ─────────────────────────────────
 
