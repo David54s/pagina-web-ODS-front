@@ -27,19 +27,22 @@ const Navigation = () => {
 
       <nav>
         <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
-          <li><Link to="/ods15"              onClick={closeMenu}>Información ODS 15</Link></li>
-          <li><Link to="/quienes-somos"      onClick={closeMenu}>¿Quiénes somos?</Link></li>
-          <li><Link to="/registro-especies"  onClick={closeMenu}>Registro de Especies</Link></li>
+          <li><Link to="/ods15"                onClick={closeMenu}>Información ODS 15</Link></li>
+          <li><Link to="/quienes-somos"        onClick={closeMenu}>¿Quiénes somos?</Link></li>
+          <li><Link to="/registro-especies"    onClick={closeMenu}>Registro de Especies</Link></li>
+
+          {/* ── Nuevo enlace: Especies Descubiertas ── */}
+          <li>
+            <Link to="/EspeciesDescubiertas" onClick={closeMenu}>Especies Descubiertas</Link>
+          </li>
 
           {autenticado ? (
             <>
-              {/* Nombre del usuario → lleva al perfil */}
               <li>
                 <Link to="/perfil" className="btn-perfil" onClick={closeMenu}>
                   👤 {usuario?.nombre_completo?.split(' ')[0] || 'Mi perfil'}
                 </Link>
               </li>
-              {/* Cerrar sesión */}
               <li>
                 <button className="btn-logout" onClick={handleLogout}>
                   Cerrar sesión

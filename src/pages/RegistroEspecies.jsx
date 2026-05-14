@@ -1,174 +1,215 @@
+/**
+ * COMPONENTE: RegistroEspecies
+ * Permite a los usuarios documentar la biodiversidad de dos formas:
+ * 1. Captura instantánea (abriendo la cámara del móvil).
+ * 2. Carga de archivo (fotos tomadas previamente).
+ */
+
 import { useState } from 'react';
 import Navigation from '../components/Navigation';
 import Footer from '../components/Footer';
+import { subirFotografia } from '../services/api'; // Servicio para enviar multipart/form-data al backend
 import './RegistroEspecies.css';
 
 const RegistroEspecies = () => {
-  const [formData, setFormData] = useState({
-    especie: '',
-    ubicacion: '',
-    fecha: '',
-    descripcion: '',
-    imagen: null
-  });
-  
-  const [showModal, setShowModal] = useState(false);
-  const [modalData, setModalData] = useState({
-    imagen: null,
-    fecha: '',
-    zona: ''
-  });
+  // ── ESTADOS PARA FOTO INSTANTÁNEA (CÁMARA) ───────────────────────────
+  const [fotoInstantanea, setFotoInstantanea] = useState(null); // Almacena el archivo File de la cámara
+  const [lugarInstantanea, setLugarInstantanea] = useState(''); // Texto del lugar para la captura rápida
+  const [mostrarLugarInput, setMostrarLugarInput] = useState(false); // Controla si se despliega el input tras tomar la foto
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  // ── ESTADOS PARA EL MODAL (FOTO ANTERIOR) ────────────────────────
+  const [showModal, setShowModal] = useState(false); // Visibilidad del modal
+  const [modalData, setModalData] = useState({ imagen: null, fecha: '', zona: '' }); // Datos del formulario del modal
 
-  const handleModalChange = (e) => {
-    const { name, value } = e.target;
-    setModalData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+  // ── ESTADOS DE CARGA Y FEEDBACK ─────────────────────
+  const [cargando, setCargando] = useState(false); // Estado visual para deshabilitar botones durante la subida
+  const [mensaje, setMensaje] = useState(null); // Objeto de retroalimentación: { tipo: 'exito'|'error', texto: '' }
 
-  // Capturar foto instantánea
+  // ── MANEJADORES PARA FOTO INSTANTÁNEA ────────────────────────────────
+
+  /**
+   * handleCapturePhoto:
+   * Detecta cuando el usuario toma una foto con la cámara del dispositivo.
+   */
   const handleCapturePhoto = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormData(prev => ({
-        ...prev,
-        imagen: file
-      }));
+      setFotoInstantanea(file);
+      setMostrarLugarInput(true); // Una vez capturada, pedimos el lugar
+      setMensaje(null); // Limpiamos mensajes previos
     }
   };
 
-  // Abrir modal para subir imagen anterior
-  const openModal = () => {
-    setShowModal(true);
-  };
-
-  // Cerrar modal
-  const closeModal = () => {
-    setShowModal(false);
-    setModalData({
-      imagen: null,
-      fecha: '',
-      zona: ''
-    });
-  };
-
-  // Manejar subida de imagen en el modal
-  const handleModalImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setModalData(prev => ({
-        ...prev,
-        imagen: file
-      }));
-    }
-  };
-
-  // Confirmar datos del modal
-  const handleModalSubmit = (e) => {
-    e.preventDefault();
-    
-    if (!modalData.imagen || !modalData.fecha || !modalData.zona) {
-      alert('Por favor completa todos los campos del modal');
+  /**
+   * handleEnviarInstantanea:
+   * Valida y envía la foto tomada con la cámara al servidor.
+   */
+  const handleEnviarInstantanea = async () => {
+    if (!lugarInstantanea.trim()) {
+      setMensaje({ tipo: 'error', texto: 'Por favor ingresa el lugar donde tomaste la foto.' });
       return;
     }
-
-    // Transferir datos del modal al formulario principal
-    setFormData(prev => ({
-      ...prev,
-      imagen: modalData.imagen,
-      fecha: modalData.fecha,
-      ubicacion: modalData.zona
-    }));
-
-    closeModal();
-    alert('¡Imagen cargada correctamente! Ahora completa los datos restantes.');
+    setCargando(true);
+    setMensaje(null);
+    try {
+      // Llamada al servicio API
+      await subirFotografia(fotoInstantanea, lugarInstantanea.trim());
+      setMensaje({ tipo: 'exito', texto: '¡Fotografía registrada con éxito! Gracias por tu aporte a BioPuebla.' });
+      
+      // Resetear formulario de instantánea
+      setFotoInstantanea(null);
+      setLugarInstantanea('');
+      setMostrarLugarInput(false);
+    } catch (err) {
+      setMensaje({ tipo: 'error', texto: err.message || 'Ocurrió un error al subir la foto.' });
+    } finally {
+      setCargando(false);
+    }
   };
 
-  const handleSubmit = (e) => {
+  // ── MANEJADORES PARA EL MODAL (FOTO DE GALERÍA) ───────────────────────────
+
+  /**
+   * handleModalChange: Maneja cambios en los inputs de texto/fecha del modal.
+   */
+  const handleModalChange = (e) => {
+    const { name, value } = e.target;
+    setModalData(prev => ({ ...prev, [name]: value }));
+  };
+
+  /**
+   * handleModalImageChange: Maneja la selección de archivos desde la galería.
+   */
+  const handleModalImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) setModalData(prev => ({ ...prev, imagen: file }));
+  };
+
+  /**
+   * closeModal: Cierra el modal y limpia sus datos internos.
+   */
+  const closeModal = () => {
+    setShowModal(false);
+    setModalData({ imagen: null, fecha: '', zona: '' });
+  };
+
+  /**
+   * handleModalSubmit:
+   * Procesa el envío de fotografías que ya estaban en el dispositivo del usuario.
+   */
+  const handleModalSubmit = async (e) => {
     e.preventDefault();
-    console.log('Datos del formulario:', formData);
-    alert('¡Registro enviado! Gracias por tu contribución a BioPuebla.');
-    
-    // Limpiar formulario
-    setFormData({
-      especie: '',
-      ubicacion: '',
-      fecha: '',
-      descripcion: '',
-      imagen: null
-    });
+    if (!modalData.imagen || !modalData.zona) {
+      setMensaje({ tipo: 'error', texto: 'Por favor completa la imagen y la zona.' });
+      closeModal();
+      return;
+    }
+    setCargando(true);
+    setMensaje(null);
+    closeModal(); // Cerramos el modal para mostrar el progreso en la pantalla principal
+    try {
+      await subirFotografia(modalData.imagen, modalData.zona.trim());
+      setMensaje({ tipo: 'exito', texto: '¡Fotografía registrada con éxito! Gracias por tu aporte a BioPuebla.' });
+    } catch (err) {
+      setMensaje({ tipo: 'error', texto: err.message || 'Ocurrió un error al subir la foto.' });
+    } finally {
+      setCargando(false);
+    }
   };
+
+  // ── RENDERIZADO (JSX) ───────────────────────────────────────────────────
 
   return (
     <>
       <Navigation />
-      
+
       <main className="registro-hero">
         <div className="registro-content">
           <h1>¡Tu Avistamiento Cuenta!</h1>
           <p>
-            Cada foto y dato que compartes nos ayuda a entender mejor la biodiversidad de Puebla 
+            Cada foto y dato que compartes nos ayuda a entender mejor la biodiversidad de Puebla
             y a proteger sus especies. Gracias por ser parte de BioPuebla.
           </p>
 
+          {/* MENSAJE DE RETROALIMENTACIÓN: Se renderiza dinámicamente según el éxito o error */}
+          {mensaje && (
+            <div className={`registro-mensaje registro-mensaje--${mensaje.tipo}`}>
+              {mensaje.tipo === 'exito' ? '✅' : '⚠️'} {mensaje.texto}
+            </div>
+          )}
+
           <div className="camera-section">
             <div className="button-group">
-              {/* Botón para capturar foto instantánea */}
+
+              {/* OPCIÓN 1: Tomar foto ahora (Uso de atributo 'capture' para móviles) */}
               <label htmlFor="capture-photo" className="camera-button">
                 <i className="fas fa-camera"></i>
                 <span>Tomar Foto Ahora</span>
-                <input 
-                  id="capture-photo" 
-                  type="file" 
-                  accept="image/*" 
-                  capture="environment"
+                <input
+                  id="capture-photo"
+                  type="file"
+                  accept="image/*"
+                  capture="environment" // Fuerza la apertura de la cámara trasera en dispositivos móviles
                   onChange={handleCapturePhoto}
                   style={{ display: 'none' }}
                 />
               </label>
 
-              {/* Botón para subir imagen anterior */}
-              <button 
-                type="button" 
+              {/* OPCIÓN 2: Subir foto anterior (Abre el modal) */}
+              <button
+                type="button"
                 className="camera-button upload-button"
-                onClick={openModal}
+                onClick={() => { setShowModal(true); setMensaje(null); }}
+                disabled={cargando}
               >
                 <i className="fas fa-upload"></i>
                 <span>Subir Foto Anterior</span>
               </button>
             </div>
 
-            {formData.imagen && (
-              <p className="file-name">
-                ✓ {formData.imagen.name}
-              </p>
+            {/* SECCIÓN DINÁMICA: Aparece solo tras capturar una foto instantánea */}
+            {mostrarLugarInput && fotoInstantanea && (
+              <div className="lugar-input-section">
+                <p className="file-name">✓ {fotoInstantanea.name}</p>
+                <input
+                  type="text"
+                  className="lugar-input"
+                  placeholder="¿Dónde tomaste esta foto? Ej: Sierra Norte de Puebla..."
+                  value={lugarInstantanea}
+                  onChange={(e) => setLugarInstantanea(e.target.value)}
+                />
+                <button
+                  className="btn-enviar-foto"
+                  onClick={handleEnviarInstantanea}
+                  disabled={cargando}
+                >
+                  {cargando ? 'Enviando...' : '📤 Enviar fotografía'}
+                </button>
+              </div>
+            )}
+
+            {/* Estado visual de carga general */}
+            {cargando && !mostrarLugarInput && (
+              <p className="file-name">Enviando fotografía...</p>
             )}
           </div>
-
         </div>
       </main>
 
-      {/* Modal para subir imagen anterior */}
+      {/* MODAL: Formulario detallado para fotos de archivo */}
       {showModal && (
         <div className="modal-overlay" onClick={closeModal}>
+          {/* stopPropagation evita que el modal se cierre al hacer clic dentro del formulario */}
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={closeModal}>
               <i className="fas fa-times"></i>
             </button>
-            
+
             <h2>Subir Foto Anterior</h2>
             <p className="modal-subtitle">Completa los datos de tu fotografía</p>
 
             <form onSubmit={handleModalSubmit}>
+              {/* Selección de archivo */}
               <div className="form-group">
                 <label htmlFor="modal-image">Seleccionar imagen</label>
                 <div className="file-input-wrapper">
@@ -189,6 +230,7 @@ const RegistroEspecies = () => {
                 </div>
               </div>
 
+              {/* Fecha de la captura (Opcional pero recomendado) */}
               <div className="form-group">
                 <label htmlFor="modal-fecha">Fecha de la fotografía</label>
                 <input
@@ -197,10 +239,10 @@ const RegistroEspecies = () => {
                   name="fecha"
                   value={modalData.fecha}
                   onChange={handleModalChange}
-                  required
                 />
               </div>
 
+              {/* Zona geográfica */}
               <div className="form-group">
                 <label htmlFor="modal-zona">Zona donde se tomó</label>
                 <input
@@ -219,7 +261,7 @@ const RegistroEspecies = () => {
                   Cancelar
                 </button>
                 <button type="submit" className="btn-confirm">
-                  Confirmar
+                  Confirmar y subir
                 </button>
               </div>
             </form>

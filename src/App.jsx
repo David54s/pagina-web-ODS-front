@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Perfil from './pages/Perfil';
 import { estaAutenticado } from './services/api';
 import './App.css';
+import EspeciesDescubiertas from './pages/EspeciesDescubiertas';
 
 // Redirige al login si no hay sesión activa
 function RutaProtegida({ children }) {
@@ -33,6 +34,9 @@ function App() {
 
         {/* Cualquier ruta desconocida → home */}
         <Route path="*" element={<Navigate to="/" replace />} />
+
+        <Route path="/EspeciesDescubiertas" element={<EspeciesDescubiertas />} />
+
       </Routes>
     </Router>
   );

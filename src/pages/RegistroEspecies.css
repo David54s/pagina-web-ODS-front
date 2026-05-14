@@ -98,7 +98,7 @@
 
 .file-name {
   margin-top: 20px;
-  color: var(--verde-limon);
+  color: var(--blanco);
   font-weight: bold;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
   font-size: clamp(0.9rem, 1.5vw, 1rem);
@@ -230,13 +230,13 @@
 }
 
 .btn-confirm {
-  background-color: var(--verde-limon);
-  color: var(--verde-oscuro);
+  background-color: var(--verde-oscuro);
+  color: var(--blanco);
 }
 
 .btn-confirm:hover {
   background-color: var(--verde-oscuro);
-  color: var(--verde-limon);
+  color: var(--blanco);
   transform: scale(1.02);
 }
 
@@ -407,4 +407,64 @@
   .modal-content h2 {
     font-size: 1.5rem;
   }
+}
+
+
+.registro-mensaje {
+  margin: 1rem auto;
+  max-width: 480px;
+  padding: 0.85rem 1.2rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+.registro-mensaje--exito {
+  background: #d4edda;
+  color: #000000;
+  border: 1px solid #c3e6cb;
+}
+.registro-mensaje--error {
+  background: #f8d7da;
+  color: #000000;
+  border: 1px solid #f5c6cb;
+}
+ 
+.lugar-input-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+ 
+.lugar-input {
+  width: 100%;
+  max-width: 400px;
+  padding: 0.7rem 1rem;
+  border: 2px solid #a8d5a2;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.lugar-input:focus {
+  border-color: #4caf50;
+}
+ 
+.btn-enviar-foto {
+  padding: 0.65rem 1.5rem;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s, opacity 0.2s;
+}
+.btn-enviar-foto:hover:not(:disabled) {
+  background: #388e3c;
+}
+.btn-enviar-foto:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

@@ -112,21 +112,20 @@
 
 /* Botón Perfil */
 .btn-perfil {
-  background-color: transparent;
+  background-color: var(--verde-oscuro);
   padding: 0.6rem 1.2rem;
   border-radius: 25px;
   font-weight: 600;
-  color: var(--verde-oscuro) !important;
-  border: 2px solid var(--verde-oscuro);
+  color: white !important;
+  border: 10px solid var(--verde-oscuro);
   transition: all 0.3s ease;
 }
 
 .btn-perfil:hover {
-  background-color: var(--verde-oscuro);
-  color: white !important;
+  background-color: #0e2b0a;
+  color: white ;
   transform: translateY(-2px);
 }
-
 /* Botón Cerrar sesión */
 .btn-logout {
   background: none;
